@@ -45,14 +45,12 @@ namespace 登录界面
             if (MessageBox.Show("确实要删除该行吗?", "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 DataRow drCurrent;
-                string Row_zhi = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();//获取第一个单元格的值            
-                //MessageBox.Show(Row_zhi);            
+                string Row_zhi = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();//获取第一个单元格的值                  
                 drCurrent = tblAuthors.Rows.Find(Row_zhi);
                 drCurrent.Delete();
 
                 SqlCommandBuilder objCommandBuilder = new SqlCommandBuilder(daAuthors); //SqlCommandBuilder 提供自动生成单表命令的一种方式，这些命令用于协调使用关联的 SQL Server 数据库对 DataSet 执行的更改。              
                 daAuthors.Update(dsPubs, "Users"); //数据适配器.Update()方法                
-                //MessageBox.Show("数据库更新成功！");
 
                 //-------重新绑定dataGridView的数据源，以便重新显示-------
                 daAuthors.Fill(dsPubs, "Users");
@@ -79,7 +77,7 @@ namespace 登录界面
             cmd.ExecuteNonQuery();
             con.Close();
             cmd = null;
-            MessageBox.Show("更新成功！", "恭喜");
+            MessageBox.Show("修改成功！", "恭喜");
         }
 
         private void 用户_FormClosed(object sender, FormClosedEventArgs e)
