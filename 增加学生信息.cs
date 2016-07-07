@@ -59,6 +59,7 @@ namespace 登录界面
                 mycom.ExecuteNonQuery();
                 conn3.Close();
                 MessageBox.Show("学生信息添加成功！");
+                Close();
             }
         }
 
