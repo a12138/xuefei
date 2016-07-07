@@ -22,16 +22,12 @@ namespace 登录界面
         {
             // TODO: 这行代码将数据加载到表“usersDataSet5.Users”中。您可以根据需要移动或删除它。
             this.usersTableAdapter.Fill(this.usersDataSet5.Users);
-           
-
-            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {           
             if (MessageBox.Show("确实要删除该行吗?", "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-               
+            {       
                 string str = "server=.;database=Users;Integrated Security=true";
                 SqlConnection con = new SqlConnection(str);
                 SqlCommand cmd = new SqlCommand();
