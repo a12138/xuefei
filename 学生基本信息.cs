@@ -27,8 +27,7 @@ namespace 登录界面
         {
             // TODO: 这行代码将数据加载到表“usersDataSet5.S”中。您可以根据需要移动或删除它。
             this.sTableAdapter1.Fill(this.usersDataSet5.S);          
-            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
-            // dataGridView1.SelectedRows[0].Cells[1].Value.ToString("yyyy-MM-dd");
+            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);            
             
             int row = dataGridView1.Rows.Count;
             for (int i = 0; i < row; i++)
@@ -71,39 +70,22 @@ namespace 登录界面
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection("Data Source=.;Initial Catalog=Users;Integrated Security=True");
-            conn.Open();
-            SqlDataAdapter daAuthors = new SqlDataAdapter("Select * From S", conn);
-
-            DataSet dsPubs = new DataSet("Pubs");
-            daAuthors.FillSchema(dsPubs, SchemaType.Source, "S"); //FillSchema加载表的架构和数据,有了架构，表就知道哪个列是它的主键，同时 Rows 集合的 Find 方法也就可用了。
-
-
-            daAuthors.Fill(dsPubs, "S");
-            DataTable tblAuthors;
-            tblAuthors = dsPubs.Tables["S"];
 
 
             if (MessageBox.Show("该操作会删除学生所有信息，是否继续?", "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                DataRow drCurrent;
-                string Row_zhi = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();//获取第一个单元格的值            
-                //MessageBox.Show(Row_zhi);            
-                drCurrent = tblAuthors.Rows.Find(Row_zhi);
-                drCurrent.Delete();
-
-                SqlCommandBuilder objCommandBuilder = new SqlCommandBuilder(daAuthors); //SqlCommandBuilder 提供自动生成单表命令的一种方式，这些命令用于协调使用关联的 SQL Server 数据库对 DataSet 执行的更改。              
-                daAuthors.Update(dsPubs, "S"); //数据适配器.Update()方法                
-                //MessageBox.Show("数据库更新成功！");
-
-                //-------重新绑定dataGridView的数据源，以便重新显示-------
-                daAuthors.Fill(dsPubs, "S");
-                DataTable tblAuthors1;
-                tblAuthors1 = dsPubs.Tables["S"];
-                dataGridView1.DataSource = tblAuthors1;
+                string str = "server=.;database=Users;Integrated Security=true";
+                SqlConnection con = new SqlConnection(str);
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = " Delete from  S where Sn= '" + dataGridView1.SelectedRows[0].Cells[0].Value.ToString() + "'";
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                cmd = null;
+                MessageBox.Show("删除成功！", "恭喜");
+                this.sTableAdapter1.Fill(this.usersDataSet5.S);
                 dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
-                conn.Close();
-                conn.Dispose();
             }
             else
             {
